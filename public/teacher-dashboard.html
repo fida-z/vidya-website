@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vidya - Teacher Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+        .navbar {
+            background: linear-gradient(135deg, #22c55e, #15803d);
+            color: white;
+            padding: 0 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 0;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .header {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .welcome-section {
+            margin-bottom: 2rem;
+        }
+        .welcome-title {
+            font-size: 1.8rem;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        .welcome-subtitle {
+            color: #64748b;
+        }
+        .upcoming-classes {
+            background: linear-gradient(135deg, #22c55e, #15803d);
+            border-radius: 12px;
+            padding: 1.5rem;
+            color: white;
+        }
+        .upcoming-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .classes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        .class-card {
+            background: rgba(255,255,255,0.15);
+            border-radius: 8px;
+            padding: 1rem;
+            backdrop-filter: blur(10px);
+        }
+        .class-time {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        .class-subject {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 0.25rem;
+        }
+        .class-room {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .dashboard-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+        .card-title {
+            font-size: 1.2rem;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .action-btn {
+            background: linear-gradient(135deg, #22c55e, #15803d);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #22c55e;
+        }
+        .stat-label {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        .recent-activity {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .activity-item {
+            padding: 0.75rem;
+            border-left: 3px solid #22c55e;
+            margin-bottom: 0.75rem;
+            background: #f8fafc;
+            border-radius: 0 6px 6px 0;
+        }
+        .activity-time {
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+        .activity-text {
+            color: #1e293b;
+            margin-top: 0.25rem;
+        }
+        .calendar-widget {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+        .calendar-date {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #22c55e;
+        }
+        .calendar-day {
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+        .footer {
+            background: #1e293b;
+            color: white;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #22c55e;
+        }
+        .footer-link {
+            color: #94a3b8;
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        .footer-link:hover {
+            color: white;
+        }
+        .footer-bottom {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+        }
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .classes-grid {
+                grid-template-columns: 1fr;
+            }
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            
+        }
+        .profile-icon {
+    width: 40px;
+    height: 40px;
+    background: #ffffff;
+    color: #15803d;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    text-decoration: none;
+}
+.profile-icon:hover {
+    background: #e2e8f0;
+    transform: scale(1.05);
+}
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">VIDYA</div>
+            <div class="nav-right">
+    <a href="teacher-profile.html" class="profile-icon">
+        DS
+    </a>
+</div>
+
+        </div>
+    </nav>
+
+    <header class="header">
+        <div class="header-content">
+            <div class="welcome-section">
+                <h1 class="welcome-title">Good Morning, Prof. Smith!</h1>
+                <p class="welcome-subtitle">Ready to inspire minds today? Here's what's coming up.</p>
+            </div>
+            
+            <div class="upcoming-classes">
+                <h2 class="upcoming-title">
+                    🕒 Upcoming Classes Today
+                </h2>
+                <div class="classes-grid">
+                    <div class="class-card">
+                        <div class="class-time">09:00 AM - 10:00 AM</div>
+                        <div class="class-subject">Computer Science 101</div>
+                        <div class="class-room">Room A-204</div>
+                    </div>
+                    <div class="class-card">
+                        <div class="class-time">11:30 AM - 12:30 PM</div>
+                        <div class="class-subject">Data Structures</div>
+                        <div class="class-room">Room B-105</div>
+                    </div>
+                    <div class="class-card">
+                        <div class="class-time">02:00 PM - 03:00 PM</div>
+                        <div class="class-subject">Algorithms</div>
+                        <div class="class-room">Room C-301</div>
+                    </div>
+                    <div class="class-card">
+                        <div class="class-time">04:00 PM - 05:00 PM</div>
+                        <div class="class-subject">Database Systems</div>
+                        <div class="class-room">Room A-102</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="left-panel">
+            <div class="dashboard-card">
+                <h2 class="card-title">
+                    ⚡ Quick Actions
+                </h2>
+                <div class="quick-actions">
+                    <button class="action-btn">
+                        📋 Take Attendance
+                    </button>
+                    <button class="action-btn">
+                        👥 Manage Students
+                    </button>
+                    <button class="action-btn">
+                        📊 View Reports
+                    </button>
+                    <button class="action-btn">
+                        📅 Schedule Class
+                    </button>
+                    <button class="action-btn">
+                        🎯 Create Assignment
+                    </button>
+                    <button class="action-btn">
+                        💬 Send Announcement
+                    </button>
+                </div>
+            </div>
+
+            <div class="dashboard-card">
+                <h2 class="card-title">
+                    📈 Class Statistics
+                </h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">156</div>
+                        <div class="stat-label">Total Students</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">89%</div>
+                        <div class="stat-label">Avg Attendance</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">12</div>
+                        <div class="stat-label">Active Classes</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">24</div>
+                        <div class="stat-label">Assignments</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="dashboard-card">
+                <div class="calendar-widget">
+                    <div class="calendar-date" id="currentDate"></div>
+                    <div class="calendar-day" id="currentDay"></div>
+                </div>
+            </div>
+
+            <div class="dashboard-card">
+                <h2 class="card-title">
+                    🔔 Recent Activity
+                </h2>
+                <div class="recent-activity">
+                    <div class="activity-item">
+                        <div class="activity-time">2 hours ago</div>
+                        <div class="activity-text">Attendance recorded for CS101 - 28 students present</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-time">4 hours ago</div>
+                        <div class="activity-text">New assignment created for Data Structures</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-time">Yesterday</div>
+                        <div class="activity-text">Grade submission completed for Algorithms</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-time">2 days ago</div>
+                        <div class="activity-text">Parent-teacher meeting scheduled</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-time">3 days ago</div>
+                        <div class="activity-text">New student enrolled in Database Systems</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="#" class="footer-link">Academic Calendar</a>
+                <a href="#" class="footer-link">Student Records</a>
+                <a href="#" class="footer-link">Course Materials</a>
+                <a href="#" class="footer-link">Examination Portal</a>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <a href="#" class="footer-link">Help Center</a>
+                <a href="#" class="footer-link">Technical Support</a>
+                <a href="#" class="footer-link">User Guide</a>
+                <a href="#" class="footer-link">Contact IT</a>
+            </div>
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <a href="#" class="footer-link">Teaching Tools</a>
+                <a href="#" class="footer-link">Assessment Center</a>
+                <a href="#" class="footer-link">Digital Library</a>
+                <a href="#" class="footer-link">Training Materials</a>
+            </div>
+            <div class="footer-section">
+                <h3>Settings</h3>
+                <a href="#" class="footer-link">Profile Settings</a>
+                <a href="#" class="footer-link">Notification Preferences</a>
+                <a href="#" class="footer-link">Privacy Settings</a>
+                <a href="#" class="footer-link">Account Security</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Vidya Attendance Management System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function updateDateTime() {
+            const now = new Date();
+            const dateOptions = { day: '2-digit' };
+            const dayOptions = { weekday: 'long', year: 'numeric', month: 'long' };
+            
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', dateOptions);
+            document.getElementById('currentDay').textContent = now.toLocaleDateString('en-US', dayOptions);
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Update time on page load
+        updateDateTime();
+        
+        // Update time every minute
+        setInterval(updateDateTime, 60000);
+
+        // Add click functionality to quick action buttons
+        document.querySelectorAll('.profile-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const action = this.textContent.trim();
+        if (action === 'View Profile') {
+            window.location.href = 'teacher-profile.html';
+        } else {
+            alert(`${action} feature will be implemented soon!`);
+        }
+        profileDropdown.classList.remove('show');
+    });
+});
+    </script>
+</body>
+</html>
