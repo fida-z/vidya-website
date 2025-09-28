@@ -385,7 +385,13 @@
             showLoading();
             await new Promise(resolve => setTimeout(resolve, 1500));
             hideLoading();
-            redirectToDashboard(2);
+                const user = mockUsers[uniqueId];
+    if (user && user.password === password) {
+        // Use the actual user's role, not hard-coded 2
+        redirectToDashboard(user.role);
+    } else {
+        showError('Invalid credentials. Please try again.');
+    }
         });
         
         function redirectToDashboard(roleCode) {
