@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vidya - Student Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+        .navbar {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 0 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 0;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .profile-header {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            z-index: 1;
+        }
+        .profile-content {
+            position: relative;
+            z-index: 2;
+        }
+        .profile-top {
+            display: flex;
+            align-items: start;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .profile-avatar-large {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 4px solid white;
+        }
+        .profile-basic-info {
+            flex: 1;
+            color: white;
+            padding-top: 1rem;
+        }
+        .profile-name {
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .profile-designation {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+        .profile-department {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+        .edit-profile-btn {
+            background: white;
+            color: #3b82f6;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+        .edit-profile-btn:hover {
+            background: #f0f9ff;
+            transform: translateY(-2px);
+        }
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            gap: 1rem;
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+        }
+        .stat-card {
+            text-align: center;
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+        .stat-label {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        .profile-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+        .section-title {
+            font-size: 1.3rem;
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #3b82f6;
+        }
+        .info-grid {
+            display: grid;
+            gap: 1rem;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 3px solid #3b82f6;
+        }
+        .info-label {
+            font-weight: 600;
+            color: #374151;
+        }
+        .info-value {
+            color: #6b7280;
+        }
+        .subjects-list {
+            display: grid;
+            gap: 0.75rem;
+        }
+        .subject-item {
+            background: #eff6ff;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+        }
+        .subject-name {
+            font-weight: 600;
+            color: #1d4ed8;
+            margin-bottom: 0.25rem;
+        }
+        .subject-details {
+            font-size: 0.9rem;
+            color: #2563eb;
+        }
+        .schedule-grid {
+            display: grid;
+            gap: 0.75rem;
+        }
+        .schedule-day {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+        }
+        .day-name {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        .time-slots {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .time-slot {
+            background: #3b82f6;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+        .achievements-list {
+            display: grid;
+            gap: 1rem;
+        }
+        .achievement-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+        }
+        .achievement-icon {
+            font-size: 1.5rem;
+        }
+        .achievement-content {
+            flex: 1;
+        }
+        .achievement-title {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+        .achievement-date {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+        .contact-methods {
+            display: grid;
+            gap: 1rem;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+        }
+        .contact-icon {
+            font-size: 1.2rem;
+            color: #3b82f6;
+        }
+        .contact-info {
+            flex: 1;
+        }
+        .contact-type {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+        .contact-value {
+            color: #6b7280;
+        }
+        .grade-item {
+            background: #eff6ff;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .grade-subject {
+            font-weight: 600;
+            color: #1d4ed8;
+        }
+        .grade-score {
+            background: #3b82f6;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-weight: 600;
+        }
+        @media (max-width: 768px) {
+            .profile-sections {
+                grid-template-columns: 1fr;
+            }
+            .profile-top {
+                flex-direction: column;
+                text-align: center;
+            }
+            .profile-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">VIDYA</div>
+            <div class="nav-right">
+                <button class="back-btn" onclick="goBack()">
+                    ← Back to Dashboard
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="profile-header">
+            <div class="profile-content">
+                <div class="profile-top">
+                    <div class="profile-avatar-large">👨‍🎓</div>
+                    <div class="profile-basic-info">
+                        <h1 class="profile-name">Amit Singh</h1>
+                        <div class="profile-designation">Computer Science Student</div>
+                        <div class="profile-department">Bachelor of Technology • 3rd Year</div>
+                        <button class="edit-profile-btn" onclick="editProfile()">✏️ Edit Profile</button>
+                    </div>
+                </div>
+                
+                <div class="profile-stats">
+                    <div class="stat-card">
+                        <div class="stat-number">92%</div>
+                        <div class="stat-label">Overall Attendance</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">6</div>
+                        <div class="stat-label">Enrolled Courses</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">3</div>
+                        <div class="stat-label">Pending Assignments</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-sections">
+            <div class="section-card">
+                <h2 class="section-title">👤 Personal Information</h2>
+                <div class="info-grid">
+                    <div class="info-row">
+                        <span class="info-label">Student ID</span>
+                        <span class="info-value">STU-2024-0567</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Date of Birth</span>
+                        <span class="info-value">January 12, 2003</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Gender</span>
+                        <span class="info-value">Male</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Nationality</span>
+                        <span class="info-value">Indian</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Admission Date</span>
+                        <span class="info-value">August 15, 2022</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <h2 class="section-title">📞 Contact Information</h2>
+                <div class="contact-methods">
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <div class="contact-info">
+                            <div class="contact-type">Email</div>
+                            <div class="contact-value">alex.johnson@student.vidya.edu</div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📱</div>
+                        <div class="contact-info">
+                            <div class="contact-type">Mobile</div>
+                            <div class="contact-value">+91 98765 12345</div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">🏠</div>
+                        <div class="contact-info">
+                            <div class="contact-type">Address</div>
+                            <div class="contact-value">456 Student Housing, Campus Road, Delhi - 110007</div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">🆔</div>
+                        <div class="contact-info">
+                            <div class="contact-type">Guardian Contact</div>
+                            <div class="contact-value">+91 87654 98765 (Father)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <h2 class="section-title">📚 Current Courses</h2>
+                <div class="subjects-list">
+                    <div class="subject-item">
+                        <div class="subject-name">Computer Science 101</div>
+                        <div class="subject-details">Prof. Smith • Room A-204 • Mon, Wed, Fri</div>
+                    </div>
+                    <div class="subject-item">
+                        <div class="subject-name">Data Structures</div>
+                        <div class="subject-details">Prof. Davis • Room B-105 • Tue, Thu</div>
+                    </div>
+                    <div class="subject-item">
+                        <div class="subject-name">Algorithms</div>
+                        <div class="subject-details">Prof. Wilson • Room C-301 • Mon, Wed</div>
+                    </div>
+                    <div class="subject-item">
+                        <div class="subject-name">Database Systems</div>
+                        <div class="subject-details">Prof. Brown • Room A-102 • Tue, Thu</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <h2 class="section-title">📅 Class Schedule</h2>
+                <div class="schedule-grid">
+                    <div class="schedule-day">
+                        <div class="day-name">Monday</div>
+                        <div class="time-slots">
+                            <span class="time-slot">09:00-10:00</span>
+                            <span class="time-slot">14:00-15:00</span>
+                        </div>
+                    </div>
+                    <div class="schedule-day">
+                        <div class="day-name">Tuesday</div>
+                        <div class="time-slots">
+                            <span class="time-slot">11:30-12:30</span>
+                            <span class="time-slot">16:00-17:00</span>
+                        </div>
+                    </div>
+                    <div class="schedule-day">
+                        <div class="day-name">Wednesday</div>
+                        <div class="time-slots">
+                            <span class="time-slot">09:00-10:00</span>
+                            <span class="time-slot">14:00-15:00</span>
+                        </div>
+                    </div>
+                    <div class="schedule-day">
+                        <div class="day-name">Thursday</div>
+                        <div class="time-slots">
+                            <span class="time-slot">11:30-12:30</span>
+                            <span class="time-slot">16:00-17:00</span>
+                        </div>
+                    </div>
+                    <div class="schedule-day">
+                        <div class="day-name">Friday</div>
+                        <div class="time-slots">
+                            <span class="time-slot">09:00-10:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script>
+        function goBack() {
+            window.location.href = 'student-dashboard.html';
+        }
+
+        function editProfile() {
+            alert('Edit Profile feature will be implemented soon!');
+        }
+
+        // Add smooth scrolling for better UX
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
