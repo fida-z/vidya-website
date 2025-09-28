@@ -151,7 +151,7 @@
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
         }
-        .action-btn {
+        .action-btn, .action-btns {
             background: linear-gradient(135deg, #3b82f6, #1d4ed8);
             color: white;
             border: none;
@@ -165,10 +165,11 @@
             align-items: center;
             gap: 0.5rem;
         }
-        .action-btn:hover {
+        .action-btn,.action-btns:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
+
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -358,7 +359,7 @@
                     <button class="action-btn">
                         📚 View Resources
                     </button>
-                    <button class="action-btn">
+                    <button class="action-btns leave">
                         ✋ Request Leave
                     </button>
                 </div>
@@ -482,10 +483,15 @@
         });
 
         // Profile icon functionality
+
         document.querySelector('.profile-icon').addEventListener('click', function(e) {
-            e.preventDefault();
-            alert('Profile page will be implemented soon!');
+            window.location.href = 'student-profile.html'
         });
+
+        const leaveBtn = document.querySelector('.leave');
+        leaveBtn.addEventListener('click', (e) => {
+            window.location.href = 'leave-apply.html'
+        })
     </script>
 </body>
 </html>

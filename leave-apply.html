@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vidya - Request Leave</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+        .navbar {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 0 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 0;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .page-header {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .page-title {
+            font-size: 2rem;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .page-subtitle {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+        .form-container {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .form-section {
+            margin-bottom: 2rem;
+        }
+        .section-title {
+            font-size: 1.2rem;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #3b82f6;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        .form-input, .form-select, .form-textarea {
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background: #f8fafc;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            background: white;
+        }
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+        }
+        .form-select {
+            cursor: pointer;
+        }
+        .date-info {
+            background: #eff6ff;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+            margin-top: 1rem;
+        }
+        .date-info-title {
+            font-weight: 600;
+            color: #1d4ed8;
+            margin-bottom: 0.5rem;
+        }
+        .date-info-text {
+            color: #2563eb;
+            font-size: 0.9rem;
+        }
+        .attachment-area {
+            border: 2px dashed #3b82f6;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            background: #f8fafc;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .attachment-area:hover {
+            background: #eff6ff;
+            border-color: #1d4ed8;
+        }
+        .attachment-icon {
+            font-size: 2rem;
+            color: #3b82f6;
+            margin-bottom: 0.5rem;
+        }
+        .attachment-text {
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+        .attachment-subtext {
+            color: #9ca3af;
+            font-size: 0.85rem;
+        }
+        .hidden-file-input {
+            display: none;
+        }
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            padding-top: 2rem;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 2rem;
+        }
+        .btn {
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #64748b;
+            border: 2px solid #e2e8f0;
+        }
+        .btn-secondary:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+        .leave-summary {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .summary-title {
+            font-weight: 600;
+            color: #1d4ed8;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        .summary-item {
+            text-align: center;
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        .summary-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+        .summary-label {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-actions {
+                flex-direction: column;
+            }
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">VIDYA</div>
+            <div class="nav-right">
+                <a href="#" class="back-btn" onclick="goBack()">
+                    ← Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">
+                ✋ Request Leave
+            </h1>
+            <p class="page-subtitle">Submit your leave application with all necessary details</p>
+        </div>
+
+
+        <form class="form-container" id="leaveForm">
+            <div class="form-section">
+                <h3 class="section-title">📋 Leave Details</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="leaveType" class="form-label">Leave Type *</label>
+                        <select id="leaveType" class="form-select" required>
+                            <option value="">Select leave type</option>
+                            <option value="sick">Sick Leave</option>
+                            <option value="personal">Personal Leave</option>
+                            <option value="emergency">Emergency Leave</option>
+                            <option value="medical">Medical Leave</option>
+                            <option value="family">Family Emergency</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="duration" class="form-label">Duration *</label>
+                        <select id="duration" class="form-select" required onchange="toggleDates()">
+                            <option value="">Select duration</option>
+                            <option value="full-day">Full Day</option>
+                            <option value="multiple-days">Multiple Days</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3 class="section-title">📅 Date Information</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="startDate" class="form-label">Start Date *</label>
+                        <input type="date" id="startDate" class="form-input" required onchange="calculateDays()">
+                    </div>
+                    <div class="form-group" id="endDateGroup">
+                        <label for="endDate" class="form-label">End Date</label>
+                        <input type="date" id="endDate" class="form-input" onchange="calculateDays()">
+                    </div>
+                </div>
+                <div class="date-info" id="dateInfo" style="display: none;">
+                    <div class="date-info-title">📊 Leave Duration</div>
+                    <div class="date-info-text" id="durationText">Duration will be calculated automatically</div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3 class="section-title">✏️ Leave Application</h3>
+                <div class="form-group full-width">
+                    <label for="reason" class="form-label">Reason for Leave *</label>
+                    <textarea id="reason" class="form-textarea" placeholder="Please provide a detailed reason for your leave application..." required></textarea>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="contactNumber" class="form-label">Contact Number</label>
+                        <input type="tel" id="contactNumber" class="form-input" placeholder="+91 98765 43210">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3 class="section-title">📎 Supporting Documents</h3>
+                <div class="attachment-area" onclick="document.getElementById('fileInput').click()">
+                    <div class="attachment-icon">📄</div>
+                    <div class="attachment-text">Click to upload supporting documents</div>
+                    <div class="attachment-subtext">Medical certificates, letters, etc. (Optional)</div>
+                </div>
+                <input type="file" id="fileInput" class="hidden-file-input" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+                <div id="fileList" style="margin-top: 1rem;"></div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                    🔄 Reset Form
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    📤 Submit Application
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function goBack() {
+            window.location.href = 'student-dashboard.html';
+        }
+
+        function toggleDates() {
+            const duration = document.getElementById('duration').value;
+            const endDateGroup = document.getElementById('endDateGroup');
+            const endDate = document.getElementById('endDate');
+            
+            if (duration === 'multiple-days') {
+                endDateGroup.style.display = 'flex';
+                endDate.required = true;
+            } else {
+                endDateGroup.style.display = 'none';
+                endDate.required = false;
+                endDate.value = '';
+            }
+            calculateDays();
+        }
+
+        function calculateDays() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const duration = document.getElementById('duration').value;
+            const dateInfo = document.getElementById('dateInfo');
+            const durationText = document.getElementById('durationText');
+
+            if (!startDate) {
+                dateInfo.style.display = 'none';
+                return;
+            }
+
+            let text = '';
+            if (duration === 'full-day') {
+                text = `Full day leave on ${new Date(startDate).toLocaleDateString()}`;
+            } else if (duration === 'multiple-days' && endDate) {
+                const start = new Date(startDate);
+                const end = new Date(endDate);
+                const diffTime = Math.abs(end - start);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+                text = `${diffDays} day(s) leave from ${start.toLocaleDateString()} to ${end.toLocaleDateString()}`;
+            }
+
+            if (text) {
+                durationText.textContent = text;
+                dateInfo.style.display = 'block';
+            } else {
+                dateInfo.style.display = 'none';
+            }
+        }
+
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const fileList = document.getElementById('fileList');
+            const files = Array.from(e.target.files);
+            
+            fileList.innerHTML = '';
+            files.forEach(file => {
+                const fileItem = document.createElement('div');
+                fileItem.style.cssText = `
+                    background: white;
+                    padding: 0.75rem;
+                    border-radius: 8px;
+                    border-left: 4px solid #3b82f6;
+                    margin-top: 0.5rem;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                `;
+                fileItem.innerHTML = `
+                    <span style="color: #1e293b;">${file.name}</span>
+                    <span style="color: #64748b; font-size: 0.85rem;">${(file.size / 1024).toFixed(1)} KB</span>
+                `;
+                fileList.appendChild(fileItem);
+            });
+        });
+
+        document.getElementById('leaveForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Basic validation
+            const requiredFields = ['leaveType', 'duration', 'startDate', 'reason'];
+            let isValid = true;
+            
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (!field.value.trim()) {
+                    field.style.borderColor = '#ef4444';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = '#3b82f6';
+                }
+            });
+            
+            if (document.getElementById('duration').value === 'multiple-days' && !document.getElementById('endDate').value) {
+                document.getElementById('endDate').style.borderColor = '#ef4444';
+                isValid = false;
+            }
+            
+            if (isValid) {
+                alert('Leave application submitted successfully! You will receive a confirmation email shortly.');
+                // Here you would normally submit the form data to your backend
+                resetForm();
+            } else {
+                alert('Please fill in all required fields.');
+            }
+        });
+
+        function resetForm() {
+            document.getElementById('leaveForm').reset();
+            document.getElementById('dateInfo').style.display = 'none';
+            document.getElementById('endDateGroup').style.display = 'none';
+            document.getElementById('fileList').innerHTML = '';
+            
+            // Reset border colors
+            document.querySelectorAll('.form-input, .form-select, .form-textarea').forEach(field => {
+                field.style.borderColor = '#e2e8f0';
+            });
+        }
+
+        // Set minimum date to today
+        document.getElementById('startDate').min = new Date().toISOString().split('T')[0];
+        document.getElementById('endDate').min = new Date().toISOString().split('T')[0];
+    </script>
+</body>
+</html>
